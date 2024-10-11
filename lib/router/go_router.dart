@@ -16,11 +16,13 @@ GoRouter appRouter() {
         return IntroScreen2(petType: petType);
       },
     ),
-    GoRoute(path: '/home', builder: (context, state) {
-
-      final selectedTab = state.extra as int? ?? 0;
-      return HomeScreen(selectedTab: selectedTab);
-    },),
+    GoRoute(
+      path: '/home',
+      builder: (context, state) {
+        final selectedTab = state.extra as int? ?? 0;
+        return HomeScreen(selectedTab: selectedTab);
+      },
+    ),
     GoRoute(path: '/video', builder: (context, state) => const VideoSwipePage()),
   ]);
 }

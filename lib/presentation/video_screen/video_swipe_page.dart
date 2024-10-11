@@ -28,9 +28,6 @@ class VideoSwipePageState extends State<VideoSwipePage> {
   void initState() {
     super.initState();
     _initializeVideoPlayer(videoPaths[_currentPage]);
-    _videoController.addListener(() {
-      setState(() {});
-    });
   }
 
   Future<void> _initializeVideoPlayer(String videoPath) async {
@@ -38,6 +35,10 @@ class VideoSwipePageState extends State<VideoSwipePage> {
     await _videoController.initialize();
     _videoController.setLooping(false);
     _videoController.play();
+    // Lắng nghe trạng thái đều hoạt động ở các page khi thay đổi
+    _videoController.addListener(() {
+      setState(() {});
+    });
     setState(() {});
   }
 
@@ -48,9 +49,7 @@ class VideoSwipePageState extends State<VideoSwipePage> {
   }
 
   void _onPageChanged(int index) async {
-    setState(() {
-      _currentPage = index;
-    });
+    setState(() => _currentPage = index);
     _videoController.pause();
     _videoController.dispose();
     await _initializeVideoPlayer(videoPaths[_currentPage]);

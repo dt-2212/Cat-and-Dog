@@ -84,15 +84,15 @@ class _IntroQuestion1State extends State<IntroQuestion2> {
               GestureDetector(
                 onTap: () {
                   if (widget.petType == 'cat') {
-                    context.go('/home', extra: 1);
+                    context.go('/home');
                   } else if (widget.petType == 'dog') {
-                    context.go('/home', extra: 2);
+                    context.go('/home');
                   }
                 },
                 child: const WidgetAnswer(
                     backgroundPath: 'assets/images/svg_images/back_2.2.svg',
                     introPath: 'assets/images/2x_images/introscreen2_img2.png',
-                    text: 'Pet teasing sounds',
+                    text: 'Pet translation',
                     alignment: Alignment.centerRight,
                     h: 57,
                     w: 53,

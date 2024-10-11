@@ -3,16 +3,15 @@ import 'package:cat_dog/presentation/intro_screen/widgets/widget_answer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroScreen1 extends StatelessWidget {
   const IntroScreen1({super.key});
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
     return SafeArea(
         child: Stack(
       children: [
@@ -38,6 +37,12 @@ class IntroQuestion1 extends StatefulWidget {
 }
 
 class _IntroQuestion1State extends State<IntroQuestion1> {
+  Future<void> _savePetPreference(String petType) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('pet_type', petType);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -60,7 +65,7 @@ class _IntroQuestion1State extends State<IntroQuestion1> {
               const SizedBox(height: 10),
               GestureDetector(
                 onTap: () {
-                  setState(() {});
+                  _savePetPreference('cat');
                   context.go('/intro_2', extra: 'cat');
                 },
                 child: const WidgetAnswer(
@@ -75,7 +80,7 @@ class _IntroQuestion1State extends State<IntroQuestion1> {
               ),
               GestureDetector(
                 onTap: () {
-                  setState(() {});
+                  _savePetPreference('dog');
                   context.go('/intro_2', extra: 'dog');
                 },
                 child: const WidgetAnswer(

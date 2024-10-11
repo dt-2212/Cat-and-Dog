@@ -15,46 +15,56 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _tabs = [];
   int currentPageIndex = 0;
-  bool isCatView = true;
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   currentPageIndex = widget.selectedTab;
+  //   _loadPetPreference();
+  // }
+  //
+  // Future<void> _loadPetPreference() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   bool? isCat = prefs.getBool('pet_type');
+  //
+  //   setState(() {
+  //     _tabs.addAll(
+  //       [
+  //         const TranslateTab(),
+  //         const CatTab(),
+  //         const DogTab(),
+  //       ],
+  //     );
+  //   });
+  // }
   @override
   void initState() {
     super.initState();
     currentPageIndex = widget.selectedTab;
     _tabs.addAll([
-      TranslateTab(
-        onViewChanged: _onViewChanged,
-        isCatView: isCatView,
-      ),
+      const TranslateTab(),
       const CatTab(),
       const DogTab(),
     ]);
   }
 
-  void _onViewChanged(bool isCat) {
-    setState(() {
-      isCatView = isCat;
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    if (_tabs.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return Scaffold(
-      backgroundColor: currentPageIndex != 0
-          ? const Color(0xFFFCFAFA)
-          : (isCatView ? const Color(0xFFFF949B) : const Color(0xFFFDEB94)),
+      backgroundColor: const Color(0xFFFCFAFA),
       body: _tabs[currentPageIndex],
       bottomNavigationBar: Container(
         margin: const EdgeInsets.only(bottom: 35, left: 35, right: 35),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(28),
           child: Container(
-            color: Colors.white,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              boxShadow: [BoxShadow(blurRadius: 10, color: Color(0x0D000000))],
+            ),
             child: BottomNavigationBar(
               elevation: 0,
               type: BottomNavigationBarType.fixed,

@@ -1,16 +1,14 @@
 import 'package:cat_dog/presentation/home/tabs/widgets/selection_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cat_dog/presentation/home/tabs/widgets/texts_and_sounds.dart';
 
 class TranslateTab extends StatefulWidget {
-  final ValueChanged<bool> onViewChanged;
-  final bool isCatView;
-
-  const TranslateTab({super.key, required this.onViewChanged, required this.isCatView});
+  const TranslateTab({super.key});
 
   @override
   State<TranslateTab> createState() => TranslateTabState();
@@ -26,12 +24,43 @@ class TranslateTabState extends State<TranslateTab> {
   String randomText = '';
   String recognizedText = '';
 
+  @override
+  void initState() {
+    super.initState();
+    _loadPetPreference();
+  }
+
+  Future<void> _loadPetPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? petType = prefs.getString('pet_type');
+
+    setState(() {
+      if (petType == 'cat') {
+        isCatView = true;
+        isDogView = false;
+      } else if (petType == 'dog') {
+        isCatView = false;
+        isDogView = true;
+      } else if (petType == 'both') {
+        isCatView = true; // Hoặc một logic khác nếu cần
+        isDogView = true;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    audioPlayer.dispose();
+  }
+
   void _playRandomSound() {
     Random random = Random();
     String soundToPlay =
         isCatView ? catSounds[random.nextInt(catSounds.length)] : dogSounds[random.nextInt(dogSounds.length)];
     audioPlayer.play(AssetSource(soundToPlay));
   }
+
   void textRandomPhrase() {
     Random random = Random();
     setState(() {
@@ -76,7 +105,6 @@ class TranslateTabState extends State<TranslateTab> {
       isCatView = true;
       isDogView = false;
       isPerson = false;
-      widget.onViewChanged(isCatView);
     });
   }
 
@@ -85,7 +113,6 @@ class TranslateTabState extends State<TranslateTab> {
       isDogView = true;
       isCatView = false;
       isPerson = false;
-      widget.onViewChanged(isCatView);
     });
   }
 
@@ -147,7 +174,6 @@ class TranslateTabState extends State<TranslateTab> {
               ),
             ),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
@@ -160,7 +186,11 @@ class TranslateTabState extends State<TranslateTab> {
                   },
                   child: Container(
                     margin: const EdgeInsets.only(left: 20),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                      boxShadow: const [BoxShadow(blurRadius: 10, color: Color(0x0D000000))],
+                    ),
                     height: 155,
                     width: 155,
                     child: Column(
@@ -191,7 +221,11 @@ class TranslateTabState extends State<TranslateTab> {
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 20),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                      boxShadow: const [BoxShadow(blurRadius: 10, color: Color(0x0D000000))],
+                    ),
                     height: 155,
                     width: 155,
                     child: Column(
