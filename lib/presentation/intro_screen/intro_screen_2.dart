@@ -67,8 +67,10 @@ class _IntroQuestion1State extends State<IntroQuestion2> {
                 onTap: () {
                   if (widget.petType == 'cat') {
                     context.go('/home', extra: 1);
-                  } else if (widget.petType == 'dog') {
-                    context.go('/home', extra: 2);
+                  } else
+                    // if (widget.petType == 'dog')
+                    {
+                      context.go('/home', extra: 2);
                   }
                 },
                 child: const WidgetAnswer(
@@ -86,6 +88,9 @@ class _IntroQuestion1State extends State<IntroQuestion2> {
                   if (widget.petType == 'cat') {
                     context.go('/home');
                   } else if (widget.petType == 'dog') {
+                    context.go('/home');
+                  }
+                  else {
                     context.go('/home');
                   }
                 },
@@ -107,7 +112,7 @@ class _IntroQuestion1State extends State<IntroQuestion2> {
                 child: const WidgetAnswer(
                     backgroundPath: 'assets/images/svg_images/back_2.3.svg',
                     introPath: 'assets/images/2x_images/introscreen2_img3.png',
-                    text: 'Pet translation',
+                    text: 'I WANT BOTH',
                     alignment: Alignment.centerLeft,
                     h: 61,
                     w: 44,
